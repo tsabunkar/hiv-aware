@@ -178,3 +178,22 @@ terraform destroy
 - \$ ssh -i ~/Downloads/ec2-jenkins-keypair-march2026.pem ec2-user@34.204.181.46
 - \$ sudo systemctl status jenkins (to jenkins file work)
 - \$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword (copy the password)
+
+### Step to Manual Pipeline Creation
+
+1. Click "New Item" on Jenkins home page
+2. Enter name: hiv-info-app-pipeline
+3. Select "Pipeline"
+4. Click OK
+5. In the configuration:
+
+
+    - Description: Automated CI/CD pipeline for hiv-info-app
+    - Pipeline section:
+        - Definition: Pipeline script from SCM
+      - SCM: Git
+      - Repository URL: https://github.com/tsabunkar/hiv-aware.git
+      - Branch: */main
+      - Script Path: Jenkinsfile
+
+6. Click Save

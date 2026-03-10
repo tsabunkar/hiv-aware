@@ -31,7 +31,7 @@ variable "jenkins_instance_type" {
 variable "jenkins_root_volume_gb" {
   description = "Root EBS volume size for Jenkins instance."
   type        = number
-  default     = 50
+  default     = 20
 }
 
 variable "jenkins_swap_gb" {

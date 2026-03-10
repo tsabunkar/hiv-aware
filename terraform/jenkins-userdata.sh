@@ -75,10 +75,33 @@ instance.save()
 GROOVY_EOF
 
 # ============================================================================
-# Init Script 2: Install Required Plugins
+# Init Script 2: Configure Built-In Node Executors
 # ============================================================================
 
-cat > $JENKINS_HOME/init.groovy.d/02-install-plugins.groovy <<'GROOVY_EOF'
+cat > $JENKINS_HOME/init.groovy.d/02-configure-executors.groovy <<'GROOVY_EOF'
+import jenkins.model.*
+import hudson.model.*
+
+def instance = Jenkins.getInstance()
+
+// Set number of executors on the built-in node
+instance.setNumExecutors(2)
+
+// Set the label for the built-in node
+instance.setLabelString("built-in master")
+
+// Set usage mode - allow any job to run on this node
+instance.setMode(Node.Mode.NORMAL)
+
+instance.save()
+println "Configured built-in node with 2 executors"
+GROOVY_EOF
+
+# ============================================================================
+# Init Script 3: Install Required Plugins
+# ============================================================================
+
+cat > $JENKINS_HOME/init.groovy.d/03-install-plugins.groovy <<'GROOVY_EOF'
 import jenkins.model.*
 import hudson.model.*
 import hudson.PluginWrapper
@@ -114,53 +137,31 @@ instance.save()
 GROOVY_EOF
 
 # ============================================================================
-# Init Script 3: Create Pipeline Job from Git
+# Init Script 4: Configure Disk Space Monitoring
 # ============================================================================
 
-cat > $JENKINS_HOME/init.groovy.d/03-create-pipeline.groovy <<'GROOVY_EOF'
+cat > $JENKINS_HOME/init.groovy.d/04-configure-disk-space.groovy <<'GROOVY_EOF'
 import jenkins.model.*
-import hudson.model.*
-import org.jenkinsci.plugins.workflow.job.WorkflowJob
-import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition
-import hudson.plugins.git.GitSCM
-import hudson.plugins.git.BranchSpec
+import hudson.node_monitors.*
 
-def instance = Jenkins.instance
-def jobName = "${jenkins_job_name}"
-def gitRepoUrl = "${git_repo_url}"
-def gitBranch = "${git_branch}"
+def instance = Jenkins.getInstance()
 
-println "Setting up pipeline job: $jobName"
+// Disable or adjust disk space monitoring
+def diskMonitor = DiskSpaceMonitor.DESCRIPTOR
+diskMonitor.setFreeDiskSpaceThreshold("500MB")  // Lower threshold to 500MB
 
-if (instance.getItem(jobName) == null) {
-  try {
-    def job = instance.createProject(WorkflowJob, jobName)
-    job.setDescription("Automated CI/CD pipeline for ${project_name}")
+// Or disable it completely (not recommended)
+// diskMonitor.setFreeDiskSpaceThreshold("")
 
-    // Configure Git SCM
-    def scm = new GitSCM(gitRepoUrl)
-    scm.branches = [new BranchSpec("*/$gitBranch")]
-
-    // Set pipeline definition to use Jenkinsfile from SCM
-    def definition = new CpsScmFlowDefinition(scm, "Jenkinsfile")
-    definition.setLightweight(true)
-    job.setDefinition(definition)
-
-    job.save()
-    println "Pipeline job '$jobName' created successfully"
-  } catch (Exception e) {
-    println "Error creating pipeline job: $${e.message}"
-  }
-} else {
-  println "Pipeline job '$jobName' already exists"
-}
+instance.save()
+println "Configured disk space monitoring threshold to 500MB"
 GROOVY_EOF
 
 # ============================================================================
-# Init Script 4: Configure Environment Variables
+# Init Script 5: Configure Environment Variables
 # ============================================================================
 
-cat > $JENKINS_HOME/init.groovy.d/04-configure-env.groovy <<'GROOVY_EOF'
+cat > $JENKINS_HOME/init.groovy.d/05-configure-env.groovy <<'GROOVY_EOF'
 import jenkins.model.*
 import hudson.slaves.EnvironmentVariablesNodeProperty
 
@@ -198,12 +199,30 @@ CLOUDFRONT_DISTRIBUTION_ID=${cloudfront_dist_id}
 ENV_EOF
 
 # ============================================================================
+# Configure /tmp with more space (tmpfs or ensure enough space)
+# ============================================================================
+
+# Increase tmpfs size for /tmp to 2GB
+if mount | grep -q "tmpfs on /tmp"; then
+  echo "Increasing /tmp tmpfs size to 2GB"
+  mount -o remount,size=2G /tmp
+  # Make it persistent across reboots
+  if ! grep -q "tmpfs /tmp tmpfs" /etc/fstab; then
+    echo "tmpfs /tmp tmpfs defaults,noatime,mode=1777,size=2G 0 0" >> /etc/fstab
+  fi
+fi
+
+# Configure Jenkins to use a custom temp directory with more space
+mkdir -p /var/lib/jenkins/tmp
+chown jenkins:jenkins /var/lib/jenkins/tmp
+
+# ============================================================================
 # Jenkins System Configuration
 # ============================================================================
 
 cat > /etc/sysconfig/jenkins <<'JENKINS_CONFIG_EOF'
 JENKINS_HOME="/var/lib/jenkins"
-JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Xmx512m -Djenkins.install.runSetupWizard=false"
+JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Xmx512m -Djenkins.install.runSetupWizard=false -Djava.io.tmpdir=/var/lib/jenkins/tmp"
 JENKINS_PORT="8080"
 JENKINS_LISTEN_ADDRESS="0.0.0.0"
 JENKINS_CONFIG_EOF
@@ -268,8 +287,12 @@ find /var/lib/jenkins/workspace -type d -name "dist" -mtime +7 -exec rm -rf {} +
 # Clean Angular cache
 find /var/lib/jenkins/workspace -type d -name ".angular" -exec rm -rf {} + 2>/dev/null || true
 
-# Clean /tmp files older than 7 days
-find /tmp -type f -mtime +7 -delete 2>/dev/null || true
+# Clean /tmp files older than 2 days (more aggressive)
+find /tmp -type f -mtime +2 -delete 2>/dev/null || true
+find /tmp -type d -empty -delete 2>/dev/null || true
+
+# Clean Jenkins custom tmp directory
+find /var/lib/jenkins/tmp -type f -mtime +2 -delete 2>/dev/null || true
 
 # Clean npm cache if it's larger than 1GB
 NPM_CACHE_SIZE=$(du -sm /var/lib/jenkins/.npm 2>/dev/null | cut -f1)
@@ -294,6 +317,6 @@ chmod +x /usr/local/bin/jenkins-cleanup.sh
 
 echo "Jenkins bootstrap completed successfully!"
 echo "Jenkins URL: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):8080"
-echo "Pipeline Job: ${jenkins_job_name}"
+echo "Note: You need to manually create the pipeline job in Jenkins"
 echo "Git Repository: ${git_repo_url}"
 echo "Branch: ${git_branch}"

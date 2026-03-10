@@ -145,14 +145,13 @@ resource "aws_instance" "jenkins" {
   key_name                    = var.jenkins_key_name != "" ? var.jenkins_key_name : null
 
   user_data = base64encode(templatefile("${path.module}/jenkins-userdata.sh", {
-    jenkins_swap_gb      = var.jenkins_swap_gb
-    jenkins_job_name     = var.jenkins_job_name
-    project_name         = var.project_name
-    git_repo_url         = var.git_repo_url
-    git_branch           = var.git_branch
-    s3_bucket            = aws_s3_bucket.site.bucket
-    cloudfront_dist_id   = aws_cloudfront_distribution.site.id
-    aws_region           = local.aws_region_effective
+    jenkins_swap_gb    = var.jenkins_swap_gb
+    project_name       = var.project_name
+    git_repo_url       = var.git_repo_url
+    git_branch         = var.git_branch
+    s3_bucket          = aws_s3_bucket.site.bucket
+    cloudfront_dist_id = aws_cloudfront_distribution.site.id
+    aws_region         = local.aws_region_effective
   }))
 
   root_block_device {

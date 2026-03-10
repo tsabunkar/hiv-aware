@@ -28,10 +28,6 @@ output "jenkins_iam_role" {
   value       = aws_iam_role.jenkins.name
 }
 
-output "jenkins_job_name" {
-  description = "Auto-created Jenkins pipeline job name."
-  value       = var.jenkins_job_name
-}
 
 output "setup_instructions" {
   description = "Quick setup instructions."
@@ -48,11 +44,16 @@ output "setup_instructions" {
        $ ssh -i <your-key>.pem ec2-user@${aws_instance.jenkins.public_ip}
        $ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
-    3. Pipeline Job: ${var.jenkins_job_name}
-       - Automatically created and configured
-       - Pulls from: ${var.git_repo_url}
-       - Branch: ${var.git_branch}
-       - Runs: Jenkinsfile
+    3. Create Pipeline Job Manually:
+       - Click "New Item" on Jenkins home page
+       - Name: hiv-info-app-pipeline (or your preferred name)
+       - Type: Pipeline
+       - Configuration:
+         * Definition: Pipeline script from SCM
+         * SCM: Git
+         * Repository URL: ${var.git_repo_url}
+         * Branch: */main
+         * Script Path: Jenkinsfile
 
     4. AWS Credentials:
        - IAM Role: ${aws_iam_role.jenkins.name}

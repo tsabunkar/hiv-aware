@@ -186,14 +186,22 @@ terraform destroy
 3. Select "Pipeline"
 4. Click OK
 5. In the configuration:
-
-
-    - Description: Automated CI/CD pipeline for hiv-info-app
-    - Pipeline section:
-        - Definition: Pipeline script from SCM
-      - SCM: Git
-      - Repository URL: https://github.com/tsabunkar/hiv-aware.git
-      - Branch: */main
-      - Script Path: Jenkinsfile
+   - Description: Automated CI/CD pipeline for hiv-info-app
+   - Pipeline section:
+     - Definition: Pipeline script from SCM
+     - SCM: Git
+     - Repository URL: https://github.com/tsabunkar/hiv-aware.git
+     - Branch: \*/main
+     - Script Path: Jenkinsfile
 
 6. Click Save
+
+## Webhook
+
+- Install Required Jenkins Plugin: GitHub Integration Plugin
+  - ![plugins](./readme-img/image.png)
+- Configure Job for this pipeline
+  - ![alt text](./readme-img/image-1.png)
+- Jenkins webhook syntax:
+  - \$ http://<your-jenkins-ip>:8080/github-webhook/
+  - ![alt text](./readme-img/image-2.png)

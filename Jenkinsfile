@@ -11,7 +11,7 @@ pipeline {
     AWS_REGION = "${env.AWS_DEFAULT_REGION}"
     S3_BUCKET = "${env.S3_BUCKET}"
     CF_DIST_ID = "${env.CLOUDFRONT_DISTRIBUTION_ID}"
-    DIST_FOLDER = "dist/hiv-info-app"
+    DIST_FOLDER = "dist/hiv-info-app/browser"
   }
 
   stages {

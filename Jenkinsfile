@@ -3,6 +3,8 @@ pipeline {
 
   options {
     timestamps()
+    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '5'))
+    disableConcurrentBuilds()
   }
 
   stages {
@@ -53,8 +55,11 @@ pipeline {
 
     stage('Deploy to S3') {
       steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
-          sh 'aws s3 sync dist/hiv-info-app s3://$S3_BUCKET --delete --only-show-errors'
+        script {
+          // Use IAM role credentials automatically attached to EC2 instance
+          sh '''
+            aws s3 sync dist/hiv-info-app s3://$S3_BUCKET --delete --only-show-errors --region $AWS_DEFAULT_REGION
+          '''
         }
       }
     }
@@ -64,10 +69,27 @@ pipeline {
         expression { return env.CLOUDFRONT_DISTRIBUTION_ID?.trim() }
       }
       steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
-          sh 'aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+        script {
+          // Use IAM role credentials automatically attached to EC2 instance
+          sh '''
+            aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*" --region $AWS_DEFAULT_REGION
+          '''
         }
       }
+    }
+  }
+
+  post {
+    always {
+      // Clean up workspace and node_modules after build
+      cleanWs(
+        deleteDirs: true,
+        patterns: [
+          [pattern: 'node_modules/**', type: 'INCLUDE'],
+          [pattern: 'dist/**', type: 'INCLUDE'],
+          [pattern: '.angular/**', type: 'INCLUDE']
+        ]
+      )
     }
   }
 }

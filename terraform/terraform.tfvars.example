@@ -1,0 +1,29 @@
+# ============================================================================
+# Terraform Variables Configuration Example
+# ============================================================================
+# Copy this file to terraform.tfvars and update with your values
+# $ cp terraform.tfvars.example terraform.tfvars
+# ============================================================================
+
+# AWS Configuration
+aws_region  = "us-east-1"
+bucket_name = "your-unique-bucket-name-here"
+
+# Project Configuration
+project_name = "hiv-info-app"
+price_class  = "PriceClass_100"  # PriceClass_100, PriceClass_200, or PriceClass_All
+
+# Jenkins Configuration
+jenkins_instance_type    = "t3.small"      # t3.small, t3.medium, t3.large
+jenkins_root_volume_gb   = 30
+jenkins_swap_gb          = 2
+jenkins_job_name         = "hiv-info-app-pipeline"
+jenkins_key_name         = ""              # Your EC2 key pair name (e.g., "my-keypair")
+
+# Security Configuration
+jenkins_allowed_cidrs = ["0.0.0.0/0"]      # Restrict to your IP: ["1.2.3.4/32"]
+ssh_allowed_cidrs     = ["0.0.0.0/0"]      # Restrict to your IP: ["1.2.3.4/32"]
+
+# Git Repository Configuration
+git_repo_url = "https://github.com/yourusername/hiv-info-app.git"
+git_branch   = "main"

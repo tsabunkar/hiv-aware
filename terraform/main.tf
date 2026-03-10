@@ -3,7 +3,14 @@ locals {
 }
 
 resource "aws_s3_bucket" "site" {
-  bucket = var.bucket_name
+  bucket = local.bucket_name_effective
+
+  lifecycle {
+    precondition {
+      condition     = local.bucket_name_effective != ""
+      error_message = "S3 bucket name is required. Set S3_BUCKET in .env.prod or pass -var=\"bucket_name=...\"."
+    }
+  }
 
   tags = {
     Project = var.project_name

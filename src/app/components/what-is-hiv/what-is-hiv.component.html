@@ -1,0 +1,48 @@
+<section class="section what-is-hiv" id="what-is-hiv">
+  <div class="section__inner">
+
+    <div class="section__header">
+      <span class="section-number">01 — What is HIV</span>
+      <h2 class="section__title">
+        Understanding<br>
+        <em>the virus</em>
+      </h2>
+      <p class="section__intro">
+        HIV stands for Human Immunodeficiency Virus. In plain terms, it's a virus that weakens your body's ability to fight other infections and diseases. But here's what's crucial: with the right treatment, people with HIV live full, long lives.
+      </p>
+    </div>
+
+    <!-- Fact cards -->
+    <div class="fact-grid">
+      <div class="fact-card" *ngFor="let fact of facts; let i = index">
+        <span class="fact-card__icon">{{ fact.icon }}</span>
+        <h3 class="fact-card__title">{{ fact.title }}</h3>
+        <p class="fact-card__text">{{ fact.text }}</p>
+      </div>
+    </div>
+
+    <!-- Disease stages -->
+    <div class="stages">
+      <h3 class="stages__title">The Three Stages of HIV</h3>
+      <div class="stages__track">
+        <div class="stage" *ngFor="let s of stages; let i = index">
+          <div class="stage__number" [style.color]="s.color">{{ (i + 1).toString().padStart(2, '0') }}</div>
+          <div class="stage__line" [style.background]="s.color"></div>
+          <div class="stage__body">
+            <h4 class="stage__phase">{{ s.phase }}</h4>
+            <span class="stage__time">{{ s.time }}</span>
+            <p class="stage__desc">{{ s.desc }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pull quote -->
+    <div class="pull-quote">
+      <blockquote>
+        "HIV is not a death sentence. It is a manageable chronic condition. The greatest danger is not knowing your status."
+      </blockquote>
+    </div>
+
+  </div>
+</section>

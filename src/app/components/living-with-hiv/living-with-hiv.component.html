@@ -1,0 +1,92 @@
+<section class="section living-hiv" id="living-with-hiv">
+  <div class="section__inner">
+
+    <div class="section__header">
+      <span class="section-number">04 — Living With HIV</span>
+      <h2 class="section__title">
+        A full life<br>
+        <em>is possible</em>
+      </h2>
+      <p class="section__intro">
+        With modern antiretroviral therapy (ART), people with HIV live as long as people without HIV. Treatment has transformed HIV from a terminal illness into a manageable chronic condition — like diabetes or high blood pressure.
+      </p>
+    </div>
+
+    <!-- U=U Banner -->
+    <div class="uu-banner">
+      <div class="uu-banner__left">
+        <span class="uu-banner__label">The most important fact</span>
+        <h3 class="uu-banner__title">U = U</h3>
+        <p class="uu-banner__sub">Undetectable = Untransmittable</p>
+      </div>
+      <p class="uu-banner__desc">
+        When a person with HIV takes ART consistently and their viral load becomes undetectable, they <strong>cannot sexually transmit HIV to their partners</strong>. This is one of the most empowering scientific findings in HIV research, confirmed by multiple major studies including PARTNER and HPTN 052.
+      </p>
+    </div>
+
+    <!-- Medications ART -->
+    <div class="art-section">
+      <h3 class="art-section__title">Antiretroviral Therapy (ART) — How It Works</h3>
+      <p class="art-section__intro">ART is a combination of HIV medicines taken daily. It does not cure HIV, but it controls the virus so you can live a healthy life. Most people take 1–2 pills a day. There are many different drug classes:</p>
+
+      <div class="art-grid">
+        <div class="art-card" *ngFor="let med of artMeds">
+          <div class="art-card__name">{{ med.name }}</div>
+          <div class="art-card__full">{{ med.full }}</div>
+          <div class="art-card__examples">e.g. {{ med.examples }}</div>
+          <p class="art-card__role">{{ med.role }}</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info">
+        <div class="callout__icon">💡</div>
+        <div class="callout__body">
+          <h3>One pill once a day</h3>
+          <p>Most modern HIV regimens are single-tablet combinations — one pill, once a day. Side effects are much milder than older treatments. Your doctor will find the right regimen for you.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 Pillars -->
+    <div class="pillars">
+      <h3 class="pillars__title">Six Pillars of Living Well with HIV</h3>
+      <div class="pillars__grid">
+        <div class="pillar" *ngFor="let p of pillars">
+          <span class="pillar__icon">{{ p.icon }}</span>
+          <h4 class="pillar__title">{{ p.title }}</h4>
+          <p class="pillar__desc">{{ p.desc }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Milestones -->
+    <div class="milestones">
+      <h3 class="milestones__title">Your Treatment Journey</h3>
+      <div class="milestones__track">
+        <div class="milestone" *ngFor="let m of milestones; let i = index; let last = last">
+          <div class="milestone__dot" [class.last]="last"></div>
+          <div class="milestone__body">
+            <span class="milestone__label">{{ m.label }}</span>
+            <span class="milestone__event">{{ m.event }}</span>
+          </div>
+          <div class="milestone__connector" *ngIf="!last"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final message -->
+    <div class="final-message">
+      <h2 class="final-message__title">
+        You are more<br>than a diagnosis.
+      </h2>
+      <p>Millions of people around the world live with HIV and lead meaningful, healthy, connected lives. Treatment works. Support exists. Stigma is the only thing standing between fear and empowerment — and knowledge is how we break it.</p>
+      <div class="final-message__tags">
+        <span>#EndTheStigma</span>
+        <span>#UequalsU</span>
+        <span>#KnowYourStatus</span>
+        <span>#TreatmentWorks</span>
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,121 @@
+.footer {
+  background: var(--bg-card);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 6rem 3rem 3rem;
+
+  &__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  &__top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 6rem;
+    margin-bottom: 4rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  &__brand {
+    p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--fg-secondary);
+      max-width: 420px;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__logo {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--fg-primary);
+    display: block;
+    margin-bottom: 1.25rem;
+
+    .logo-dot { color: var(--accent-red); margin: 0 2px; }
+  }
+
+  &__disclaimer {
+    font-size: 0.75rem !important;
+    color: var(--fg-muted) !important;
+    font-style: italic;
+    border-left: 2px solid rgba(255,255,255,0.08);
+    padding-left: 1rem !important;
+    margin-top: 1.5rem !important;
+  }
+
+  &__cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  &__col {
+    h4 {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    a {
+      font-size: 0.85rem;
+      color: var(--fg-secondary);
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover { color: var(--fg-primary); }
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+
+    @media (max-width: 480px) { flex-direction: column; gap: 1rem; }
+  }
+
+  &__copy {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+  }
+
+  &__back-top {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--fg-muted);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: var(--fg-primary);
+      border-color: rgba(255,255,255,0.3);
+    }
+  }
+}

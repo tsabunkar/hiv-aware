@@ -1,0 +1,39 @@
+<nav class="navbar" [class.scrolled]="scrolled" [class.menu-open]="menuOpen">
+  <div class="navbar__inner">
+    <!-- Logo -->
+    <a class="navbar__logo" (click)="scrollTo('hero')" href="javascript:void(0)">
+      HIV<span class="logo-dot">·</span>Aware
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="navbar__links">
+      <li *ngFor="let s of sections">
+        <a (click)="scrollTo(s.id)" href="javascript:void(0)">{{ s.label }}</a>
+      </li>
+    </ul>
+
+    <!-- Hamburger button -->
+    <button class="hamburger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Full-screen menu overlay -->
+<div class="menu-overlay" [class.open]="menuOpen" (click)="closeMenu()">
+  <div class="menu-overlay__inner" (click)="$event.stopPropagation()">
+    <div class="menu-overlay__content">
+      <p class="menu-label">Navigate</p>
+      <ul>
+        <li *ngFor="let s of sections; let i = index"
+            [style.animation-delay]="(i * 80) + 'ms'">
+          <a (click)="scrollTo(s.id)" href="javascript:void(0)">{{ s.label }}</a>
+        </li>
+      </ul>
+      <div class="menu-overlay__footer">
+        <p>Information that empowers.</p>
+        <p class="sub">Always consult a healthcare professional.</p>
+      </div>
+    </div>
+  </div>
+</div>

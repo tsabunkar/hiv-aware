@@ -1,0 +1,47 @@
+<section class="hero" id="hero">
+  <div class="hero__bg">
+    <div class="hero__grid"></div>
+    <div class="hero__gradient"></div>
+  </div>
+
+  <div class="hero__content">
+    <span class="section-number">HIV · Awareness · Education</span>
+
+    <h1 class="hero__title">
+      <span class="line line-1">Knowledge</span>
+      <span class="line line-2">is the</span>
+      <span class="line line-3">First Step.</span>
+    </h1>
+
+    <p class="hero__desc">
+      HIV affects millions of people around the world. Understanding it — clearly and without stigma — is how we protect each other and live well.
+    </p>
+
+    <div class="hero__actions">
+      <button class="btn-primary" (click)="scrollToLearn()">Start Learning</button>
+      <span class="hero__scroll-hint">
+        <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+          <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1"/>
+          <circle cx="8" cy="8" r="2" fill="currentColor" class="scroll-dot"/>
+        </svg>
+        Scroll to explore
+      </span>
+    </div>
+  </div>
+
+  <div class="hero__stats" [class.visible]="statsVisible">
+    <div class="stat" *ngFor="let stat of stats; let i = index"
+         [style.animation-delay]="(i * 150 + 800) + 'ms'">
+      <span class="stat__number">{{ stat.number }}</span>
+      <span class="stat__label">{{ stat.label }}</span>
+    </div>
+  </div>
+
+  <div class="hero__ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span *ngFor="let _ of [1,2,3]">
+        Know Your Status &nbsp;·&nbsp; Undetectable = Untransmittable &nbsp;·&nbsp; End The Stigma &nbsp;·&nbsp; Treatment Saves Lives &nbsp;·&nbsp; Test Regularly &nbsp;·&nbsp;
+      </span>
+    </div>
+  </div>
+</section>

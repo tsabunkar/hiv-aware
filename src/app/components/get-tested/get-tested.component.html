@@ -1,0 +1,56 @@
+<section class="section get-tested" id="get-tested">
+  <div class="section__inner">
+
+    <div class="section__header">
+      <span class="section-number">03 — What To Do</span>
+      <h2 class="section__title">
+        Diagnosed?<br>
+        <em>Here's what to do</em>
+      </h2>
+      <p class="section__intro">
+        A positive HIV diagnosis can be frightening. But knowing what to do next makes an enormous difference. Take a breath — and take these steps.
+      </p>
+    </div>
+
+    <!-- Steps timeline -->
+    <div class="timeline">
+      <div class="timeline__item" *ngFor="let step of steps">
+        <div class="timeline__left">
+          <span class="timeline__num">{{ step.num }}</span>
+          <div class="timeline__line"></div>
+        </div>
+        <div class="timeline__body">
+          <span class="timeline__urgency">{{ step.urgency }}</span>
+          <h3 class="timeline__title">{{ step.title }}</h3>
+          <p class="timeline__desc">{{ step.desc }}</p>
+          <div class="timeline__action">→ {{ step.action }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test types -->
+    <div class="test-types">
+      <h3 class="test-types__title">Types of HIV Tests</h3>
+      <div class="test-types__grid">
+        <div class="test-card" *ngFor="let t of testTypes">
+          <h4 class="test-card__name">{{ t.name }}</h4>
+          <div class="test-card__meta">
+            <span><strong>Time:</strong> {{ t.time }}</span>
+            <span><strong>Window:</strong> {{ t.window }}</span>
+            <span class="test-card__note">{{ t.note }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency callout -->
+    <div class="callout callout--urgent">
+      <div class="callout__icon">⏱</div>
+      <div class="callout__body">
+        <h3>Think you were just exposed to HIV?</h3>
+        <p>PEP (Post-Exposure Prophylaxis) must be started within <strong>72 hours</strong> of possible exposure. Go to an emergency room or urgent care clinic immediately. Do not wait.</p>
+      </div>
+    </div>
+
+  </div>
+</section>

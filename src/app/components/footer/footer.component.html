@@ -1,0 +1,40 @@
+<footer class="footer">
+  <div class="footer__inner">
+
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="footer__logo">HIV<span class="logo-dot">·</span>Aware</span>
+        <p>Clear, compassionate, and accurate information about HIV. Empowering people to live fully and without stigma.</p>
+        <p class="footer__disclaimer">This website is for informational purposes only. Always consult a qualified healthcare professional for medical advice, diagnosis, or treatment.</p>
+      </div>
+
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h4>Navigate</h4>
+          <ul>
+            <li *ngFor="let s of sections">
+              <a (click)="scrollTo(s.id)" href="javascript:void(0)">{{ s.label }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Trusted Resources</h4>
+          <ul>
+            <li *ngFor="let r of resources">
+              <a [href]="r.url" target="_blank" rel="noopener noreferrer">{{ r.label }} ↗</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span class="footer__copy">© {{ year }} HIV·Aware — Information for Everyone</span>
+      <button class="footer__back-top" (click)="scrollTop()">
+        ↑ Back to top
+      </button>
+    </div>
+
+  </div>
+</footer>

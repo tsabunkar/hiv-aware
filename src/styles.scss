@@ -1,0 +1,116 @@
+/* ============================================
+   HIV AWARE — Global Design System
+   Cinematic Dark Editorial Aesthetic
+   ============================================ */
+
+:root {
+  --black: #0a0a0a;
+  --deep: #111115;
+  --surface: #18181e;
+  --card: #1e1e26;
+  --border: rgba(255,255,255,0.08);
+  --red: #c8102e;
+  --red-bright: #e8192e;
+  --red-glow: rgba(200, 16, 46, 0.25);
+  --amber: #e8a020;
+  --teal: #1ab0a0;
+  --white: #f5f2ee;
+  --muted: rgba(245, 242, 238, 0.55);
+  --faint: rgba(245, 242, 238, 0.15);
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+/* Selection */
+::selection {
+  background: var(--red);
+  color: var(--white);
+}
+
+/* Typography Utilities */
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Section Base */
+section {
+  position: relative;
+}
+
+/* Container */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Divider */
+.divider {
+  width: 60px;
+  height: 3px;
+  background: var(--red);
+  margin: 1.5rem 0;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 var(--red-glow); }
+  50% { box-shadow: 0 0 20px 6px var(--red-glow); }
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -3%); }
+  30% { transform: translate(2%, 1%); }
+  50% { transform: translate(-1%, 4%); }
+  70% { transform: translate(3%, -2%); }
+  90% { transform: translate(-2%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animate on scroll helper classes */
+.animate-in {
+  animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

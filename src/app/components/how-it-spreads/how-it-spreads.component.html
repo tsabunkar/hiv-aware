@@ -1,0 +1,61 @@
+<section class="section how-spreads" id="how-it-spreads">
+  <div class="section__inner">
+
+    <div class="section__header section__header--alt">
+      <span class="section-number">02 — How HIV Spreads</span>
+      <h2 class="section__title">
+        Facts, not<br><em>fear</em>
+      </h2>
+      <p class="section__intro">
+        HIV is only transmitted through specific body fluids. Knowing exactly how it spreads — and how it doesn't — removes stigma and helps you protect yourself and others.
+      </p>
+    </div>
+
+    <!-- Transmission -->
+    <div class="two-col">
+      <!-- Can transmit -->
+      <div class="transmit-block">
+        <h3 class="block-title block-title--danger">
+          <span class="block-title__icon">⚡</span>
+          How HIV IS transmitted
+        </h3>
+        <div class="transmit-list">
+          <div class="transmit-item" *ngFor="let item of canTransmit">
+            <div class="transmit-item__header">
+              <span class="transmit-item__dot"></span>
+              <h4>{{ item.method }}</h4>
+            </div>
+            <p>{{ item.detail }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cannot transmit -->
+      <div class="transmit-block safe-block">
+        <h3 class="block-title block-title--safe">
+          <span class="block-title__icon">✓</span>
+          How HIV is NOT transmitted
+        </h3>
+        <p class="safe-intro">You <strong>cannot</strong> get HIV from everyday contact. Period.</p>
+        <ul class="safe-list">
+          <li *ngFor="let item of cannotTransmit">
+            <span class="check">✓</span> {{ item }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Prevention -->
+    <div class="prevention">
+      <h3 class="prevention__title">Ways to Prevent HIV</h3>
+      <div class="prevention__grid">
+        <div class="prevention__card" *ngFor="let p of preventions">
+          <span class="prevention__icon">{{ p.icon }}</span>
+          <h4 class="prevention__label">{{ p.label }}</h4>
+          <p class="prevention__sub">{{ p.sub }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

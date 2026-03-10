@@ -6,6 +6,7 @@ import { WhatIsHivComponent } from './components/what-is-hiv/what-is-hiv.compone
 import { HowItSpreadsComponent } from './components/how-it-spreads/how-it-spreads.component';
 import { GetTestedComponent } from './components/get-tested/get-tested.component';
 import { LivingWithHivComponent } from './components/living-with-hiv/living-with-hiv.component';
+import { LearnFromChampsComponent } from './components/learn-from-champs/learn-from-champs.component';
 import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
@@ -19,6 +20,7 @@ import { FooterComponent } from './components/footer/footer.component';
     HowItSpreadsComponent,
     GetTestedComponent,
     LivingWithHivComponent,
+    LearnFromChampsComponent,
     FooterComponent
   ],
   templateUrl: './app.component.html',

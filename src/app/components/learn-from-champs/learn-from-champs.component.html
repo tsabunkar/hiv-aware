@@ -1,0 +1,56 @@
+<section class="section learn-champs" id="learn-from-champs">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section-number">05 — Learn From Champs</span>
+      <h2 class="section__title">
+        Learn from<br>
+        <em>champs</em>
+      </h2>
+      <p class="section__intro">
+        Curated talks and stories to deepen understanding and reduce stigma.
+      </p>
+    </div>
+
+    <div class="carousel">
+      <button class="nav-btn left" type="button" aria-label="Previous video" (click)="prev()">
+        <span class="chevron">‹</span>
+      </button>
+
+      <div class="carousel-viewport">
+        <div class="carousel-track" [style.transform]="trackTransform">
+          <article class="video-card" *ngFor="let video of videos; let i = index">
+            <div class="video-frame">
+              <iframe
+                [src]="video.safeSrc"
+                [title]="video.title"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-meta">
+              <span class="video-tag font-mono">Featured</span>
+              <h3 class="video-title">{{ video.title }}</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <button class="nav-btn right" type="button" aria-label="Next video" (click)="next()">
+        <span class="chevron">›</span>
+      </button>
+    </div>
+
+    <div class="carousel-dots" role="tablist" aria-label="Video navigation">
+      <button
+        class="dot"
+        *ngFor="let _ of videos; let i = index"
+        type="button"
+        [class.active]="i === currentIndex"
+        (click)="goTo(i)"
+        [attr.aria-label]="'Go to video ' + (i + 1)">
+      </button>
+    </div>
+  </div>
+</section>

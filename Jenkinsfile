@@ -3,93 +3,87 @@ pipeline {
 
   options {
     timestamps()
-    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '5'))
+    buildDiscarder(logRotator(numToKeepStr: '5'))
     disableConcurrentBuilds()
+  }
+
+  environment {
+    AWS_REGION = "${env.AWS_DEFAULT_REGION}"
+    S3_BUCKET = "${env.S3_BUCKET}"
+    CF_DIST_ID = "${env.CLOUDFRONT_DISTRIBUTION_ID}"
+    DIST_FOLDER = "dist/hiv-info-app"
   }
 
   stages {
     stage('Checkout') {
       steps {
+        echo 'Checking out code from Git repository...'
         checkout scm
       }
     }
 
-    stage('Load Prod Env') {
+    stage('Install Dependencies') {
       steps {
-        script {
-          def envLines = readFile('.env.prod').split('\n')
-          envLines.each { line ->
-            def trimmed = line.trim()
-            if (!trimmed || trimmed.startsWith('#')) return
-            def idx = trimmed.indexOf('=')
-            if (idx <= 0) return
-            def key = trimmed.substring(0, idx).trim()
-            def val = trimmed.substring(idx + 1).trim()
-            if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-              val = val.substring(1, val.length() - 1)
-            }
-            env[key] = val
-          }
-
-          if (!env.AWS_DEFAULT_REGION?.trim()) {
-            error('AWS_DEFAULT_REGION is required in .env.prod')
-          }
-          if (!env.S3_BUCKET?.trim()) {
-            error('S3_BUCKET is required in .env.prod')
-          }
-        }
-      }
-    }
-
-    stage('Install') {
-      steps {
+        echo 'Installing Node.js dependencies...'
         sh 'npm ci'
       }
     }
 
-    stage('Build & Deploy Script') {
+    stage('Build Angular App') {
       steps {
-        sh 'npm run deploy'
+        echo 'Building Angular application for production...'
+        sh 'npm run build -- --configuration production'
       }
     }
 
     stage('Deploy to S3') {
       steps {
         script {
-          // Use IAM role credentials automatically attached to EC2 instance
-          sh '''
-            aws s3 sync dist/hiv-info-app s3://$S3_BUCKET --delete --only-show-errors --region $AWS_DEFAULT_REGION
-          '''
+          echo "Deploying to S3 bucket: ${S3_BUCKET}..."
+          def syncResult = sh(
+            script: """
+              aws s3 sync ${DIST_FOLDER} s3://${S3_BUCKET} \
+                --delete \
+                --region ${AWS_REGION} \
+                --only-show-errors
+            """,
+            returnStatus: true
+          )
+
+          if (syncResult != 0) {
+            error("S3 deployment failed!")
+          }
+          echo "Successfully deployed to S3!"
         }
       }
     }
 
     stage('Invalidate CloudFront') {
-      when {
-        expression { return env.CLOUDFRONT_DISTRIBUTION_ID?.trim() }
-      }
       steps {
         script {
-          // Use IAM role credentials automatically attached to EC2 instance
-          sh '''
-            aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*" --region $AWS_DEFAULT_REGION
-          '''
+          echo 'Invalidating CloudFront cache...'
+          sh """
+            aws cloudfront create-invalidation \
+              --distribution-id ${CF_DIST_ID} \
+              --paths "/*" \
+              --region ${AWS_REGION}
+          """
+          echo 'CloudFront cache invalidated!'
         }
       }
     }
   }
 
   post {
+    success {
+      echo 'Deployment completed successfully!'
+    }
+    failure {
+      echo 'Deployment failed. Check logs for details.'
+    }
     always {
-      // Clean up workspace and node_modules after build
-      cleanWs(
-        deleteDirs: true,
-        patterns: [
-          [pattern: 'node_modules/**', type: 'INCLUDE'],
-          [pattern: 'dist/**', type: 'INCLUDE'],
-          [pattern: '.angular/**', type: 'INCLUDE']
-        ]
-      )
+      echo 'Cleaning up workspace...'
+      cleanWs()
     }
   }
 }

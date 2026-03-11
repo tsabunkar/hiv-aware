@@ -25,13 +25,13 @@ variable "price_class" {
 variable "jenkins_instance_type" {
   description = "EC2 instance type for Jenkins."
   type        = string
-  default     = "t3.medium"
+  default     = "t3.small"
 }
 
 variable "jenkins_root_volume_gb" {
   description = "Root EBS volume size for Jenkins instance."
   type        = number
-  default     = 30
+  default     = 15
 }
 
 variable "jenkins_swap_gb" {

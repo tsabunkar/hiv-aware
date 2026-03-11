@@ -205,4 +205,3 @@ terraform destroy
 - Jenkins webhook syntax:
   - \$ http://<your-jenkins-ip>:8080/github-webhook/
   - ![alt text](./readme-img/image-2.png)
--
